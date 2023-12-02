@@ -114,9 +114,21 @@ int main(int argc, char *argv[]) {
       i++;
     }
 
-    if (possible) {
-      sum += game_id;
+    int min_red = 0;
+    int min_blue = 0;
+    int min_green = 0;
+    for (showing sh : game_data) {
+      min_red = max(min_red, sh.reds);
+      min_blue = max(min_blue, sh.blues);
+      min_green = max(min_green, sh.greens);
     }
+    cout << "FOR GAME " << game_id << " THE MINIMUMS ARE " << endl;
+    cout << "   " << min_red << " REDS" << endl;
+    cout << "   " << min_blue << " BLUES " << endl;
+    cout << "   " << min_green << " GREENS" << endl;
+    cout << "    AND THE POWER IS " << min_red * min_blue * min_green << endl;
+    int power = min_red * min_blue * min_green;
+    sum += power;
   }
   cout << "SUM = " << sum << endl;
 }
