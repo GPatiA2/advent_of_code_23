@@ -100,12 +100,22 @@ vector<long int> inside_h(const vector<string> &lines_read,
       char at_pos = lines_read[i][j];
       long int ar_idx = graph.to_arr_pos(i, j);
       bool in_path = (full_path.find(ar_idx) != full_path.end());
-      cout << " CHAR " << at_pos;
+      if ((at_pos == '7' || at_pos == 'F' || at_pos == '|') && in_path) {
+        v_borders_crossed += 1;
+      } else {
+        if (!in_path) {
+          if (v_borders_crossed % 2 == 1) {
+            inside_set.push_back(ar_idx);
+          } else {
+            outside += 1;
+          }
+        }
+      }
     }
   }
+
   return inside_set;
 }
-
 char guess_S(char c1, char c2) {
   if (c1 == '-' && c2 == 'F') {
     return 'J';
@@ -175,8 +185,8 @@ int main(int argc, char *argv[]) {
   cout << " ADY1 = " << ady1 << " " << lines_read[ady1.x][ady1.y] << endl;
   cout << " ADY2 = " << ady2 << " " << lines_read[ady2.x][ady2.y] << endl;
 
-  // char S_g = 'J';
-  char S_g = 'F';
+  char S_g = 'J';
+  // char S_g = 'F';
 
   bool reached = false;
   int total_steps;
