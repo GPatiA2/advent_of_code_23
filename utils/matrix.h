@@ -1,6 +1,7 @@
 #ifndef MATRIX_H
 #define MATRIX_H
 
+#include <cmath>
 #include <iostream>
 using namespace std;
 
@@ -12,6 +13,28 @@ private:
   int cols;
 
 public:
+  struct Coords {
+    int x;
+    int y;
+
+    Coords() {}
+    Coords(int cx, int cy) {
+      x = cx;
+      y = cy;
+    }
+
+    friend ostream &operator<<(ostream &out, const Coords &c) {
+      out << c.x << " " << c.y;
+      return out;
+    }
+
+    friend int operator-(const Coords &c1, const Coords &c2) {
+      int d1 = c1.x - c2.x;
+      int d2 = c1.y - c2.y;
+      return sqrt(pow(d1, 2) + pow(d2, 2));
+    }
+  };
+
   Matrix(int r, int c) {
     rows = r;
     cols = c;
@@ -24,7 +47,6 @@ public:
   Matrix(int r, int c, T init) {
     rows = r;
     cols = c;
-    cout << "Initializing matrix with " << init << endl;
     matrix = new T *[rows];
     for (int i = 0; i < rows; i++) {
       matrix[i] = new T[cols];
@@ -32,7 +54,6 @@ public:
         matrix[i][j] = init;
       }
     }
-    cout << "MATRIX 0 0 HAS " << matrix[0][0] << endl;
   }
 
   int get_rows() const { return rows; }
@@ -42,10 +63,27 @@ public:
 
   T *const &operator[](int row) const { return matrix[row]; }
 
-  bool in_bounds(int x, int y) {
+  T &operator[](Coords c) { return matrix[c.x][c.y]; }
+
+  T const &operator[](Coords c) const { return matrix[c.x][c.y]; }
+
+  bool in_bounds(int x, int y) const {
     bool x_ok = x >= 0 && x < rows;
     bool y_ok = y >= 0 && y < cols;
     return x_ok && y_ok;
+  }
+
+  bool in_bounds(const Coords &c) const { return in_bounds(c.x, c.y); }
+
+  long int to_arr_pos(int x, int y) const { return x * cols + y; }
+
+  long int to_arr_pos(const Coords &c) const { return to_arr_pos(c.x, c.y); }
+
+  Coords from_arr_pos(long int i) const {
+    Coords c;
+    c.x = i / rows;
+    c.y = i % cols;
+    return c;
   }
 };
 

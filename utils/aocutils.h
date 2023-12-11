@@ -26,4 +26,26 @@ template <class T> inline ostream &operator<<(ostream &os, vector<T> vec) {
   return os;
 }
 
+template <class T>
+vector<T> filter_vector(const vector<T> &v, bool (*filter)(T)) {
+  vector<T> ret;
+  for (T elem : v) {
+    if (filter(elem)) {
+      ret.push_back(elem);
+    }
+  }
+  return ret;
+}
+
+template <class T>
+vector<T> filter_vector(const vector<T> &v, bool (*filter)(T, T), const T &ef) {
+  vector<T> v_ret;
+  for (T elem : v) {
+    if (filter(elem, ef)) {
+      v_ret.push_back(elem);
+    }
+  }
+  return v_ret;
+}
+
 #endif
