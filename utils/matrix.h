@@ -11,6 +11,7 @@ private:
   T **matrix;
   int rows;
   int cols;
+  T init;
 
 public:
   struct Coords {
@@ -35,14 +36,7 @@ public:
     }
   };
 
-  Matrix(int r, int c) {
-    rows = r;
-    cols = c;
-    matrix = new T *[rows];
-    for (int i = 0; i < rows; i++) {
-      matrix[i] = new T[cols];
-    }
-  }
+  Matrix() {}
 
   Matrix(int r, int c, T init) {
     rows = r;
@@ -54,6 +48,8 @@ public:
         matrix[i][j] = init;
       }
     }
+
+    this->init = init;
   }
 
   int get_rows() const { return rows; }
@@ -73,6 +69,13 @@ public:
     return x_ok && y_ok;
   }
 
+  void clear() {
+    for (int i = 0; i < rows; i++) {
+      for (int j = 0; j < cols; j++) {
+        matrix[i][j] = 0;
+      }
+    }
+  }
   bool in_bounds(const Coords &c) const { return in_bounds(c.x, c.y); }
 
   long int to_arr_pos(int x, int y) const { return x * cols + y; }
